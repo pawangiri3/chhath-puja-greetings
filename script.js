@@ -150,7 +150,7 @@ function showMedia(autoplay) {
   }
 }
 async function startMediaShow() {
-  if (!mediaPlaylist || !mediaPlaylist.length) await loadMediaPlaylist();
+  await playlistReady;
   mediaPlaying = true;
   showMedia(true);
 }
@@ -184,7 +184,7 @@ chhathVideo.addEventListener("error", () => {
     filmLabel.textContent = "वीडियो फ़ाइल उपलब्ध नहीं है";
   }
 });
-loadMediaPlaylist();
+const playlistReady = loadMediaPlaylist();
 
 /* ---- canvas effects: diyas, flowers, sparks, fireworks ---- */
 /* ---- canvas effects: diyas, flowers, sparks, fireworks ---- */
