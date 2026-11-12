@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🌅 शुभ छठ पूजा 🌅</title>
+<meta name="description" content="छठ महापर्व की हार्दिक शुभकामनाएं! जय छठी मैया | जय सूर्य देव">
+<meta property="og:title" content="🌅 शुभ छठ पूजा 🌅">
+<meta property="og:description" content="जय छठी मैया | जय सूर्य देव">
+<meta name="theme-color" content="#2a1b6e">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="sunrise">
+<div id="loader" role="status"><div class="ls"></div><p>जय छठी मैया 🙏</p></div>
+<div class="bg rise"></div><div class="bg set"></div>
+<div class="sunwrap" id="sunwrap"><div class="rays"></div><div class="sun"></div></div>
+<svg class="hills" viewBox="0 0 800 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200V110Q80 60 170 100T340 90T520 105T700 70T800 100V200Z" fill="#3a2266" opacity=".75"/><path d="M0 200V145Q120 105 250 140T480 132T800 128V200Z" fill="#1b1040"/></svg>
+<div class="river" aria-hidden="true"><div class="reflect"></div><div class="w1"></div><div class="w2"></div></div>
+<svg class="people" viewBox="0 0 400 60" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+<defs><symbol id="p" viewBox="0 -8 20 48"><g fill="#190d2c"><circle cx="10" cy="8" r="4"/><path d="M5 13h10l2 25H3z"/><ellipse cx="10" cy="-3" rx="7" ry="2.5" fill="#ffb347"/></g><path d="M5 15L3 0M15 15l2-15" stroke="#190d2c" stroke-width="2" fill="none"/></symbol></defs>
+<use href="#p" x="20" y="14" width="22" height="46"/><use href="#p" x="60" y="20" width="18" height="40"/><use href="#p" x="95" y="12" width="24" height="48"/><use href="#p" x="140" y="22" width="16" height="38"/>
+<use href="#p" x="250" y="22" width="16" height="38"/><use href="#p" x="285" y="12" width="24" height="48"/><use href="#p" x="330" y="20" width="18" height="40"/><use href="#p" x="365" y="14" width="22" height="46"/>
+</svg>
+<div class="garland" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<main>
+<section class="card" id="card">
+<h1>🌅 शुभ छठ पूजा 🌅</h1>
+<p class="sub">जय छठी मैया | जय सूर्य देव</p>
+<svg class="daura" viewBox="0 0 120 80" role="img" aria-label="फल, नारियल, ठेकुआ और गन्ने के साथ बाँस का दौरा">
+<path d="M30 62L20 8M90 62l10-54" stroke="#7bc65a" stroke-width="4" stroke-linecap="round"/><path d="M24 20l-9-6M96 20l9-6" stroke="#7bc65a" stroke-width="3"/>
+<circle cx="45" cy="40" r="11" fill="#6b3f1d"/><circle cx="75" cy="40" r="11" fill="#ff8a1f"/><circle cx="60" cy="34" r="10" fill="#ffd34d"/>
+<rect x="38" y="48" width="14" height="8" rx="4" fill="#b8772e"/><rect x="68" y="48" width="14" height="8" rx="4" fill="#b8772e"/>
+<path d="M18 52h84l-9 24H27z" fill="#c07a2c"/><path d="M22 60h76M25 68h70M40 52l4 24M60 52v24M80 52l-4 24" stroke="#8a5218" stroke-width="1.5"/></svg>
+<p class="msg" id="msg">छठी मैया और सूर्य देव आपके जीवन में सुख, शांति, समृद्धि और खुशहाली लाएं। आपके परिवार पर सदैव अपनी कृपा बनाए रखें। छठ महापर्व की हार्दिक शुभकामनाएं!</p>
+<p class="from">— <span id="sender"></span></p>
+<div class="actions">
+<button class="btn wa" id="share">💬 WhatsApp पर भेजें</button>
+<button class="btn" id="copy">📋 शुभकामना कॉपी करें</button>
+<button class="btn" id="replay">🔄 दृश्य दोबारा देखें</button>
+</div>
+<div class="player" role="group" aria-label="संगीत प्लेयर">
+<button class="btn" id="play" aria-pressed="false">🎵 संगीत चलाएं</button>
+<span class="eq" id="eq" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span>
+<button class="ico" id="mute" aria-label="आवाज़ बंद करें">🔊</button>
+<input id="vol" type="range" min="0" max="1" step="0.05" value="0.6" aria-label="आवाज़">
+<label class="lp"><input type="checkbox" id="loop" checked> 🔁 दोहराएं</label>
+<p class="mmsg" id="mmsg" aria-live="polite">पहिले-पहिले हम कईनी छठी मइया व्रत तोहार — शारदा सिन्हा जी</p>
+</div>
+</section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="script.js"></script>
+</body>
+</html>
