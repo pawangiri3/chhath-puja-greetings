@@ -70,6 +70,50 @@ $("#mute").addEventListener("click", () => { au.muted = !au.muted; });
 $("#vol").addEventListener("input", e => { au.volume = +e.target.value; au.muted = false; });
 $("#loop").addEventListener("change", e => { au.loop = e.target.checked; });
 
+/* ---- Chhath video: play two short clips in sequence ---- */
+const chhathVideo = $("#chhathVideo");
+const videoPlay = $("#videoPlay");
+const videoClips = ["assets/scene-1.mp4", "assets/scene-2.mp4"];
+let activeClip = 0;
+function setVideoButton(playing) {
+  videoPlay.textContent = playing ? "Ⅱ" : "▶";
+  videoPlay.classList.toggle("playing", playing);
+  videoPlay.setAttribute("aria-label", playing ? "वीडियो रोकें" : "वीडियो चलाएं");
+}
+async function startChhathVideo() {
+  try { await chhathVideo.play(); setVideoButton(true); }
+  catch (_) { setVideoButton(false); toast("वीडियो चलाने के लिए ▶ दबाएं।"); }
+}
+videoPlay.addEventListener("click", () => {
+  if (chhathVideo.paused) startChhathVideo();
+  else { chhathVideo.pause(); setVideoButton(false); }
+});
+chhathVideo.addEventListener("click", () => {
+  if (chhathVideo.paused) startChhathVideo();
+  else { chhathVideo.pause(); setVideoButton(false); }
+});
+chhathVideo.addEventListener("play", () => setVideoButton(true));
+chhathVideo.addEventListener("pause", () => setVideoButton(false));
+chhathVideo.addEventListener("ended", () => {
+  if (activeClip === 0) {
+    activeClip = 1;
+    $("#filmLabel").textContent = "छठ घाट • अर्घ्य का पावन दृश्य";
+    chhathVideo.src = videoClips[activeClip];
+    chhathVideo.load();
+    startChhathVideo();
+  } else {
+    activeClip = 0;
+    $("#filmLabel").textContent = "छठ घाट की एक झलक";
+    chhathVideo.src = videoClips[activeClip];
+    chhathVideo.load();
+    setVideoButton(false);
+  }
+});
+chhathVideo.addEventListener("error", () => {
+  setVideoButton(false);
+  $("#filmLabel").textContent = "वीडियो फ़ाइल उपलब्ध नहीं है";
+});
+
 /* ---- canvas effects: diyas, flowers, sparks, fireworks ---- */
 const cv = $("#fx"), cx = cv.getContext("2d");
 let W, H, diyas = [], flowers = [], sparks = [], fw = [], burstUntil = 0, nextFw = 0, raf = 0;
