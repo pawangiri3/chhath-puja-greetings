@@ -8,6 +8,7 @@
 <meta property="og:title" content="🌅 शुभ छठ पूजा 🌅">
 <meta property="og:description" content="जय छठी मैया | जय सूर्य देव">
 <meta name="theme-color" content="#2a1b6e">
+<meta property="og:image" content="assets/poster.jpg">
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="sunrise">
@@ -34,6 +35,15 @@
 <path d="M18 52h84l-9 24H27z" fill="#c07a2c"/><path d="M22 60h76M25 68h70M40 52l4 24M60 52v24M80 52l-4 24" stroke="#8a5218" stroke-width="1.5"/></svg>
 <p class="msg" id="msg">छठी मैया और सूर्य देव आपके जीवन में सुख, शांति, समृद्धि और खुशहाली लाएं। आपके परिवार पर सदैव अपनी कृपा बनाए रखें। छठ महापर्व की हार्दिक शुभकामनाएं!</p>
 <p class="from">— <span id="sender"></span></p>
+<div class="film" aria-label="छठ पूजा का छोटा वीडियो">
+  <video id="chhathVideo" poster="assets/poster.jpg" playsinline muted preload="metadata">
+    <source src="assets/scene-1.mp4" type="video/mp4">
+    आपका ब्राउज़र वीडियो नहीं चला सकता।
+  </video>
+  <button class="film-play" id="videoPlay" type="button" aria-label="वीडियो चलाएं">▶</button>
+  <span class="film-label" id="filmLabel">छठ घाट की एक झलक</span>
+</div>
+<p class="film-hint">वीडियो चलाने के लिए ▶ दबाएं • दोनों दृश्य क्रम से चलेंगे</p>
 <div class="actions">
 <button class="btn wa" id="share">💬 WhatsApp पर भेजें</button>
 <button class="btn" id="copy">📋 शुभकामना कॉपी करें</button>
