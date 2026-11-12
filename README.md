@@ -10,6 +10,25 @@ A static Hindi Chhath Puja greeting page built with HTML, CSS and vanilla JavaSc
 - Optional user-initiated devotional music player
 - Responsive layout and reduced-motion support
 
+## Add more videos and photos (no JavaScript edits)
+The greeting page reads `assets/playlist.json`. The two existing videos are already listed there. To add more media later:
+
+1. Upload each new file into the repository's `assets/` folder. Use short, simple names such as `clip-03.mp4`, `clip-04.mp4`, or `snap-01.jpg`.
+2. Open `assets/playlist.json` on GitHub and click **Edit**.
+3. Add one item inside the `items` array for each file. Keep commas between entries.
+
+Example video item:
+```json
+{ "type": "video", "src": "assets/clip-03.mp4", "title": "अर्घ्य का दृश्य" }
+```
+
+Example photo item (shown for 4 seconds):
+```json
+{ "type": "image", "src": "assets/snap-01.jpg", "title": "छठ पूजा की याद", "duration": 4000 }
+```
+
+For videos use `"type": "video"`. For JPG, PNG or WebP snapshots use `"type": "image"`; photo duration is in milliseconds (1500–30000). The playlist repeats continuously from the last item back to the first. No changes to `index.html`, `style.css` or `script.js` are needed when adding media—only upload the media file and edit `playlist.json`.
+
 ## Required video assets
 Upload these files into the repository's existing `assets/` directory:
 - `scene-1.mp4`
