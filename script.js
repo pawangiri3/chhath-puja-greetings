@@ -47,47 +47,58 @@ $("#copy").addEventListener("click", async () => {
   }
 });
 
-/* ---- music ---- */
-const au = new Audio(); au.preload = "none"; au.loop = CONFIG.loop; au.volume = CONFIG.volume;
-$("#vol").value = CONFIG.volume; $("#loop").checked = CONFIG.loop;
-const playBtn = $("#play"), eq = $("#eq"), mm = $("#mmsg");
-function ui() {
-  const on = !au.paused;
-  eq.classList.toggle("on", on); playBtn.setAttribute("aria-pressed", on);
-  playBtn.textContent = on ? "⏸ संगीत रोकें" : "🎵 संगीत चलाएं";
-  $("#mute").textContent = au.muted || au.volume === 0 ? "🔇" : "🔊";
-  $("#mute").setAttribute("aria-label", au.muted ? "आवाज़ चालू करें" : "आवाज़ बंद करें");
+/* ---- synchronized devotional audio + Chhath media playlist ---- */
+const au = new Audio();
+au.preload = "auto";
+au.loop = true;
+au.volume = CONFIG.volume;
+$("#vol").value = CONFIG.volume;
+const eq = $("#eq"), mm = $("#mmsg");
+const muteBtn = $("#mute");
+function audioUI() {
+  const playing = !au.paused;
+  eq.classList.toggle("on", playing);
+  muteBtn.textContent = au.muted || au.volume === 0 ? "🔇" : "🔊";
+  muteBtn.setAttribute("aria-label", au.muted ? "गीत की आवाज़ चालू करें" : "गीत की आवाज़ बंद करें");
 }
-function missing() { ui(); mm.textContent = "संगीत फ़ाइल नहीं मिली। assets/chhath-song.mp3 जोड़ें — तब तक वेबसाइट बिना संगीत के चलेगी 🙏"; }
-playBtn.addEventListener("click", () => {
-  if (!au.paused) { au.pause(); return; }
-  if (!au.src) au.src = CONFIG.songFile;
-  au.play().then(() => { mm.textContent = "🎵 पहिले-पहिले हम कईनी छठी मइया व्रत तोहार — शारदा सिन्हा जी"; ui(); }).catch(missing);
-});
-au.addEventListener("error", missing);
-["play", "pause", "ended", "volumechange"].forEach(e => au.addEventListener(e, ui));
-$("#mute").addEventListener("click", () => { au.muted = !au.muted; });
-$("#vol").addEventListener("input", e => { au.volume = +e.target.value; au.muted = false; });
-$("#loop").addEventListener("change", e => { au.loop = e.target.checked; });
+function musicMissing() {
+  audioUI();
+  mm.textContent = "वीडियो चल रहा है, लेकिन गीत की MP3 नहीं मिली। assets/chhath-song.mp3 जाँचें।";
+}
+au.addEventListener("error", musicMissing);
+["play","pause","ended","volumechange"].forEach(e => au.addEventListener(e, audioUI));
+muteBtn.addEventListener("click", () => { au.muted = !au.muted; audioUI(); });
+$("#vol").addEventListener("input", e => { au.volume = Number(e.target.value); au.muted = false; audioUI(); });
 
-/* ---- Chhath media playlist: videos + photos, looping continuously ---- */
+/* ---- Chhath media playlist: all videos + photos, looping ---- */
 const chhathVideo = $("#chhathVideo");
 const chhathPhoto = $("#chhathPhoto");
 const videoPlay = $("#videoPlay");
 const filmLabel = $("#filmLabel");
-const defaultPlaylist = [
-  { type: "video", src: "assets/scene-1.mp4", title: "छठ घाट की एक झलक" },
-  { type: "video", src: "assets/scene-2.mp4", title: "छठ घाट • अर्घ्य का पावन दृश्य" }
+const fallbackPlaylist = [
+  {type:"video",src:"assets/clip-01.mp4",title:"छठ पूजा • वीडियो"},
+  {type:"image",src:"assets/snap-01.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-02.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-03.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-04.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-05.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-06.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-07.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-08.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"image",src:"assets/snap-09.jpeg",title:"छठ पूजा की तस्वीर",duration:4000},
+  {type:"video",src:"assets/scene-1.mp4",title:"छठ घाट की एक झलक"},
+  {type:"video",src:"assets/scene-2.mp4",title:"छठ घाट • अर्घ्य का पावन दृश्य"}
 ];
-let mediaPlaylist = defaultPlaylist;
+let mediaPlaylist = fallbackPlaylist;
 let activeMedia = 0;
 let mediaPlaying = false;
 let photoTimer = null;
+let playlistLoaded = false;
 
 function setMediaButton(playing) {
   videoPlay.textContent = playing ? "Ⅱ" : "▶";
   videoPlay.classList.toggle("playing", playing);
-  videoPlay.setAttribute("aria-label", playing ? "दृश्य रोकें" : "दृश्य चलाएं");
+  videoPlay.setAttribute("aria-label", playing ? "वीडियो और गीत रोकें" : "वीडियो और गीत चलाएं");
 }
 function clearPhotoTimer() {
   if (photoTimer) { clearTimeout(photoTimer); photoTimer = null; }
@@ -96,21 +107,24 @@ function currentMedia() { return mediaPlaylist[activeMedia]; }
 
 async function loadMediaPlaylist() {
   try {
-    const response = await fetch("assets/playlist.json?v=1", { cache: "no-store" });
+    const response = await fetch("assets/playlist.json?v=20261113", {cache:"no-store"});
     if (!response.ok) throw new Error("Playlist not found");
     const data = await response.json();
     if (Array.isArray(data.items)) {
       const valid = data.items.filter(item =>
-        item && ["video", "image"].includes(item.type) &&
+        item && ["video","image"].includes(item.type) &&
         typeof item.src === "string" && item.src.trim()
       );
       if (valid.length) mediaPlaylist = valid;
     }
   } catch (_) {
-    mediaPlaylist = defaultPlaylist;
+    mediaPlaylist = fallbackPlaylist;
+  } finally {
+    playlistLoaded = true;
   }
 }
 function nextMedia() {
+  if (!mediaPlaylist.length) return;
   activeMedia = (activeMedia + 1) % mediaPlaylist.length;
   showMedia(true);
 }
@@ -126,10 +140,11 @@ function showMedia(autoplay) {
     chhathVideo.hidden = true;
     chhathPhoto.hidden = false;
     chhathPhoto.alt = item.alt || item.title || "छठ पूजा का दृश्य";
+    chhathPhoto.onerror = () => { if (mediaPlaying) nextMedia(); };
     chhathPhoto.src = item.src;
     setMediaButton(autoplay);
     if (autoplay) {
-      const duration = Math.max(1500, Math.min(Number(item.duration) || 3500, 30000));
+      const duration = Math.max(1500, Math.min(Number(item.duration) || 4000, 30000));
       photoTimer = setTimeout(nextMedia, duration);
     }
     return;
@@ -144,21 +159,36 @@ function showMedia(autoplay) {
   if (autoplay) {
     chhathVideo.play().catch(() => {
       mediaPlaying = false;
+      au.pause();
       setMediaButton(false);
-      toast("दृश्य चलाने के लिए ▶ दबाएं।");
+      mm.textContent = "वीडियो प्ले करने के लिए ▶ दबाएं।";
+      audioUI();
     });
   }
 }
-async function startMediaShow() {
-  await playlistReady;
+function startMediaShow() {
+  if (mediaPlaying) return;
   mediaPlaying = true;
+
+  // Start the MP3 and first video directly inside the same user click.
+  // This satisfies browser autoplay rules for audible media.
+  if (!au.src) au.src = CONFIG.songFile;
+  au.play().then(() => {
+    mm.textContent = "🎵 शारदा सिन्हा जी का छठ गीत वीडियो के साथ चल रहा है";
+    audioUI();
+  }).catch(musicMissing);
+
+  activeMedia = 0;
   showMedia(true);
 }
 function pauseMediaShow() {
   mediaPlaying = false;
   clearPhotoTimer();
   chhathVideo.pause();
+  au.pause();
   setMediaButton(false);
+  mm.textContent = "▶ दबाएं — वीडियो और छठ गीत साथ शुरू होंगे";
+  audioUI();
 }
 videoPlay.addEventListener("click", () => {
   if (mediaPlaying) pauseMediaShow();
@@ -177,7 +207,7 @@ chhathVideo.addEventListener("ended", () => {
 });
 chhathVideo.addEventListener("error", () => {
   if (mediaPlaying) {
-    toast("एक वीडियो नहीं चल पाया; अगला दृश्य दिखा रहे हैं।");
+    toast("एक वीडियो नहीं चल पाया; अगले दृश्य पर जा रहे हैं।");
     nextMedia();
   } else {
     setMediaButton(false);
