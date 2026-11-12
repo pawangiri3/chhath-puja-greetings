@@ -1,28 +1,39 @@
 # 🌅 शुभ छठ पूजा — Animated Greeting Website
 
-Pure HTML + CSS + JavaScript. No build step, no backend, no paid service. Works on GitHub Pages.
+A static Hindi Chhath Puja greeting page built with HTML, CSS and vanilla JavaScript. No build step, backend, API key or paid hosting is required.
 
-## Customise
-Open `script.js` and edit `CONFIG` at the top:
-- `senderName` — your name (default "Pawan Kumar")
-- `siteUrl` — optional: your final GitHub Pages URL
-- Per-friend link without editing code: `https://USERNAME.github.io/chhath-puja/?from=Rahul`
+## What's included
+- Existing animated sunrise/sunset, river, diyas, flowers and fireworks
+- Two-clip Chhath video player in the greeting card
+- WhatsApp sharing and copy-greeting actions
+- Sender name customization using `CONFIG.senderName` or `?from=Name`
+- Optional user-initiated devotional music player
+- Responsive layout and reduced-motion support
 
-## Short video section
-The page includes two optimized, muted 9:16 clips (`assets/scene-1.mp4` and `assets/scene-2.mp4`). Visitors tap the play control; the clips play in sequence. They are silent so visitors can choose devotional music separately.
+## Required video assets
+Upload these files into the repository's existing `assets/` directory:
+- `scene-1.mp4`
+- `scene-2.mp4`
+- `poster.jpg`
 
-## Music (optional)
-Put your legally obtained MP3 at `assets/chhath-song.mp3`. Nothing is autoplayed; the visitor taps **संगीत चलाएं**. Without the file, the site works and shows a friendly message. See `assets/README.txt`.
+The video player is silent by default. Visitors press Play; the two clips then play in sequence. The three video files are provided separately in the accompanying `chhath-video-assets.zip`. Extract it and upload the files inside its `assets/` folder into this repository's `assets/` directory. If the repository currently has zero-byte placeholders with these names, replace them with the provided files.
 
-## Deploy FREE on GitHub Pages
-1. **Create a repo:** sign in at github.com → **+** → **New repository** → name it `chhath-puja` → choose **Public** → **Create repository**.
-2. **Upload files:** click **uploading an existing file**. Drag in `index.html`, `style.css`, `script.js`, `README.md` and the `assets` folder (with `chhath-song.mp3` if you have it). Click **Commit changes**. (`index.html` must be in the repo root.)
-3. **Enable Pages:** repo → **Settings** → **Pages** (left menu).
-4. **Source:** under *Build and deployment* choose **Deploy from a branch**; Branch: **main**, Folder: **/ (root)** → **Save**.
-5. **Get your URL:** wait 1–2 minutes and refresh the Pages screen. It shows `https://USERNAME.github.io/chhath-puja/` — open it, then press **WhatsApp पर भेजें** (it shares this live URL).
-6. **Update later:** open the file in the repo → ✏️ edit → **Commit changes** (or **Add file → Upload files** to replace). The site refreshes in about a minute; hard-refresh your phone browser if you still see the old version.
+## Customize
+Open `script.js` and edit `CONFIG.senderName` (default: `Pawan Kumar`). For a personal greeting link, append `?from=Rahul` to the deployed URL.
+
+## Optional devotional music
+Place a lawfully obtained MP3 at `assets/chhath-song.mp3`. The site does not autoplay audio. Visitors must press **संगीत चलाएं**. The original Sharda Sinha Ji recording is copyrighted; only upload/host a copy if you have the necessary rights. Otherwise, add the song through Instagram's licensed music library when publishing the Reel.
+
+## GitHub Pages
+This repository is already `pawangiri3/chhath-puja-greetings`; do not create a new repository.
+1. Open **Settings → Pages**.
+2. Under **Build and deployment**, choose **Deploy from a branch**.
+3. Select branch `main` and folder `/(root)`, then Save.
+4. After deployment, open: https://pawangiri3.github.io/chhath-puja-greetings/
+
+To upload the video assets in GitHub's web UI: open the `assets/` directory → **Add file → Upload files** → select `scene-1.mp4`, `scene-2.mp4` and `poster.jpg` → **Commit changes**.
 
 ## Troubleshooting
-- 404 page: confirm `index.html` is in the root and Pages is set to `main` / `/ (root)`.
-- No music: file name must be exactly `chhath-song.mp3` inside `assets/`.
-- WhatsApp shows no link: you're on localhost/file — use the deployed URL or fill `siteUrl`.
+- If the video poster or clips do not appear, confirm all three required assets are under `assets/` and filenames match exactly.
+- If music does not play, confirm `assets/chhath-song.mp3` exists and is a supported MP3.
+- If WhatsApp sharing does not include a link, first open the deployed HTTPS GitHub Pages URL rather than a local file.
