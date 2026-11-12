@@ -70,50 +70,123 @@ $("#mute").addEventListener("click", () => { au.muted = !au.muted; });
 $("#vol").addEventListener("input", e => { au.volume = +e.target.value; au.muted = false; });
 $("#loop").addEventListener("change", e => { au.loop = e.target.checked; });
 
-/* ---- Chhath video: play two short clips in sequence ---- */
+/* ---- Chhath media playlist: videos + photos, looping continuously ---- */
 const chhathVideo = $("#chhathVideo");
+const chhathPhoto = $("#chhathPhoto");
 const videoPlay = $("#videoPlay");
-const videoClips = ["assets/scene-1.mp4", "assets/scene-2.mp4"];
-let activeClip = 0;
-function setVideoButton(playing) {
+const filmLabel = $("#filmLabel");
+const defaultPlaylist = [
+  { type: "video", src: "assets/scene-1.mp4", title: "छठ घाट की एक झलक" },
+  { type: "video", src: "assets/scene-2.mp4", title: "छठ घाट • अर्घ्य का पावन दृश्य" }
+];
+let mediaPlaylist = defaultPlaylist;
+let activeMedia = 0;
+let mediaPlaying = false;
+let photoTimer = null;
+
+function setMediaButton(playing) {
   videoPlay.textContent = playing ? "Ⅱ" : "▶";
   videoPlay.classList.toggle("playing", playing);
-  videoPlay.setAttribute("aria-label", playing ? "वीडियो रोकें" : "वीडियो चलाएं");
+  videoPlay.setAttribute("aria-label", playing ? "दृश्य रोकें" : "दृश्य चलाएं");
 }
-async function startChhathVideo() {
-  try { await chhathVideo.play(); setVideoButton(true); }
-  catch (_) { setVideoButton(false); toast("वीडियो चलाने के लिए ▶ दबाएं।"); }
+function clearPhotoTimer() {
+  if (photoTimer) { clearTimeout(photoTimer); photoTimer = null; }
+}
+function currentMedia() { return mediaPlaylist[activeMedia]; }
+
+async function loadMediaPlaylist() {
+  try {
+    const response = await fetch("assets/playlist.json?v=1", { cache: "no-store" });
+    if (!response.ok) throw new Error("Playlist not found");
+    const data = await response.json();
+    if (Array.isArray(data.items)) {
+      const valid = data.items.filter(item =>
+        item && ["video", "image"].includes(item.type) &&
+        typeof item.src === "string" && item.src.trim()
+      );
+      if (valid.length) mediaPlaylist = valid;
+    }
+  } catch (_) {
+    mediaPlaylist = defaultPlaylist;
+  }
+}
+function nextMedia() {
+  activeMedia = (activeMedia + 1) % mediaPlaylist.length;
+  showMedia(true);
+}
+function showMedia(autoplay) {
+  clearPhotoTimer();
+  const item = currentMedia();
+  if (!item) return;
+
+  filmLabel.textContent = item.title || (item.type === "image" ? "छठ पूजा की तस्वीर" : "छठ पूजा का दृश्य");
+
+  if (item.type === "image") {
+    chhathVideo.pause();
+    chhathVideo.hidden = true;
+    chhathPhoto.hidden = false;
+    chhathPhoto.alt = item.alt || item.title || "छठ पूजा का दृश्य";
+    chhathPhoto.src = item.src;
+    setMediaButton(autoplay);
+    if (autoplay) {
+      const duration = Math.max(1500, Math.min(Number(item.duration) || 3500, 30000));
+      photoTimer = setTimeout(nextMedia, duration);
+    }
+    return;
+  }
+
+  chhathPhoto.hidden = true;
+  chhathVideo.hidden = false;
+  chhathVideo.pause();
+  chhathVideo.src = item.src;
+  chhathVideo.load();
+  setMediaButton(autoplay);
+  if (autoplay) {
+    chhathVideo.play().catch(() => {
+      mediaPlaying = false;
+      setMediaButton(false);
+      toast("दृश्य चलाने के लिए ▶ दबाएं।");
+    });
+  }
+}
+async function startMediaShow() {
+  if (!mediaPlaylist || !mediaPlaylist.length) await loadMediaPlaylist();
+  mediaPlaying = true;
+  showMedia(true);
+}
+function pauseMediaShow() {
+  mediaPlaying = false;
+  clearPhotoTimer();
+  chhathVideo.pause();
+  setMediaButton(false);
 }
 videoPlay.addEventListener("click", () => {
-  if (chhathVideo.paused) startChhathVideo();
-  else { chhathVideo.pause(); setVideoButton(false); }
+  if (mediaPlaying) pauseMediaShow();
+  else startMediaShow();
 });
 chhathVideo.addEventListener("click", () => {
-  if (chhathVideo.paused) startChhathVideo();
-  else { chhathVideo.pause(); setVideoButton(false); }
+  if (mediaPlaying) pauseMediaShow();
+  else startMediaShow();
 });
-chhathVideo.addEventListener("play", () => setVideoButton(true));
-chhathVideo.addEventListener("pause", () => setVideoButton(false));
+chhathPhoto.addEventListener("click", () => {
+  if (mediaPlaying) pauseMediaShow();
+  else startMediaShow();
+});
 chhathVideo.addEventListener("ended", () => {
-  if (activeClip === 0) {
-    activeClip = 1;
-    $("#filmLabel").textContent = "छठ घाट • अर्घ्य का पावन दृश्य";
-    chhathVideo.src = videoClips[activeClip];
-    chhathVideo.load();
-    startChhathVideo();
-  } else {
-    activeClip = 0;
-    $("#filmLabel").textContent = "छठ घाट की एक झलक";
-    chhathVideo.src = videoClips[activeClip];
-    chhathVideo.load();
-    setVideoButton(false);
-  }
+  if (mediaPlaying) nextMedia();
 });
 chhathVideo.addEventListener("error", () => {
-  setVideoButton(false);
-  $("#filmLabel").textContent = "वीडियो फ़ाइल उपलब्ध नहीं है";
+  if (mediaPlaying) {
+    toast("एक वीडियो नहीं चल पाया; अगला दृश्य दिखा रहे हैं।");
+    nextMedia();
+  } else {
+    setMediaButton(false);
+    filmLabel.textContent = "वीडियो फ़ाइल उपलब्ध नहीं है";
+  }
 });
+loadMediaPlaylist();
 
+/* ---- canvas effects: diyas, flowers, sparks, fireworks ---- */
 /* ---- canvas effects: diyas, flowers, sparks, fireworks ---- */
 const cv = $("#fx"), cx = cv.getContext("2d");
 let W, H, diyas = [], flowers = [], sparks = [], fw = [], burstUntil = 0, nextFw = 0, raf = 0;
