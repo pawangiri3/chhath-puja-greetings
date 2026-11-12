@@ -56,3 +56,9 @@ To upload the video assets in GitHub's web UI: open the `assets/` directory → 
 - If the video poster or clips do not appear, confirm all three required assets are under `assets/` and filenames match exactly.
 - If music does not play, confirm `assets/chhath-song.mp3` exists and is a supported MP3.
 - If WhatsApp sharing does not include a link, first open the deployed HTTPS GitHub Pages URL rather than a local file.
+
+
+## Automatic photo/video show + music sync
+The media player reads `assets/playlist.json`. It now cycles through the 9 uploaded JPEG snapshots (each for 4 seconds) and all 3 MP4 clips. When the visitor presses the main video Play button, the slideshow and `assets/chhath-song.mp3` start from that same click. Pressing Pause stops both. The song loops continuously. The separate music Play button has been removed; mute and volume controls remain.
+
+To add more media later, upload the file under `assets/` and add an item to `playlist.json`. Photo example: `{"type":"image","src":"assets/snap-10.jpeg","title":"छठ पूजा","duration":4000}`. Video example: `{"type":"video","src":"assets/clip-02.mp4","title":"अर्घ्य" }`. No JS edits are required.

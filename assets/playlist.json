@@ -3,6 +3,65 @@
   "items": [
     {
       "type": "video",
+      "src": "assets/clip-01.mp4",
+      "title": "छठ पूजा • वीडियो"
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-01.jpeg",
+      "title": "छठ पूजा की झलक 1",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-02.jpeg",
+      "title": "छठ पूजा की झलक 2",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-03.jpeg",
+      "title": "छठ पूजा की झलक 3",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-04.jpeg",
+      "title": "छठ पूजा की झलक 4",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-05.jpeg",
+      "title": "छठ पूजा की झलक 5",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-06.jpeg",
+      "title": "छठ पूजा की झलक 6",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-07.jpeg",
+      "title": "छठ पूजा की झलक 7",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-08.jpeg",
+      "title": "छठ पूजा की झलक 8",
+      "duration": 4000
+    },
+    {
+      "type": "image",
+      "src": "assets/snap-09.jpeg",
+      "title": "छठ पूजा की झलक 9",
+      "duration": 4000
+    },
+    {
+      "type": "video",
       "src": "assets/scene-1.mp4",
       "title": "छठ घाट की एक झलक"
     },
