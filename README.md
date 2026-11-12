@@ -8,6 +8,9 @@ Open `script.js` and edit `CONFIG` at the top:
 - `siteUrl` — optional: your final GitHub Pages URL
 - Per-friend link without editing code: `https://USERNAME.github.io/chhath-puja/?from=Rahul`
 
+## Short video section
+The page includes two optimized, muted 9:16 clips (`assets/scene-1.mp4` and `assets/scene-2.mp4`). Visitors tap the play control; the clips play in sequence. They are silent so visitors can choose devotional music separately.
+
 ## Music (optional)
 Put your legally obtained MP3 at `assets/chhath-song.mp3`. Nothing is autoplayed; the visitor taps **संगीत चलाएं**. Without the file, the site works and shows a friendly message. See `assets/README.txt`.
 
