@@ -58,3 +58,15 @@ input[type=range]{width:110px;accent-color:#ffb347}
 @keyframes bar{to{height:22px}}
 @media(max-width:480px){.card{padding:20px 14px}.btn{padding:9px 13px;font-size:.92rem}.sunwrap{bottom:34vh}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* Short Chhath Puja video */
+.film{position:relative;width:min(100%,230px);aspect-ratio:9/16;margin:16px auto 0;overflow:hidden;border-radius:19px;border:1px solid rgba(255,213,106,.65);background:#170f2b;box-shadow:0 8px 28px rgba(0,0,0,.38)}
+.film video{width:100%;height:100%;display:block;object-fit:cover}
+.film:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 32%,transparent 65%,rgba(0,0,0,.38))}
+.film-play{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.8);background:rgba(255,211,106,.94);color:#351600;font-size:1.35rem;box-shadow:0 4px 18px #0008}
+.film-play:hover{transform:translate(-50%,-50%) scale(1.06)}
+.film-play.playing{opacity:0;pointer-events:none}
+.film:hover .film-play.playing,.film:focus-within .film-play.playing{opacity:1;pointer-events:auto}
+.film-label{position:absolute;z-index:2;bottom:12px;left:8px;right:8px;font-size:.78rem;text-shadow:0 1px 5px #000;text-align:center;color:#fff7e6;pointer-events:none}
+.film-hint{font-size:.78rem;color:#ffe6bd;opacity:.9;margin-top:7px}
+@media(max-width:480px){.film{width:min(74vw,230px)}}
