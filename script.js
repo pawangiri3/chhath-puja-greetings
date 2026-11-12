@@ -1,7 +1,7 @@
 "use strict";
 /* ===== CONFIGURATION — edit here ===== */
 const CONFIG = {
-  senderName: "Pawan Kumar",          // बदलने के लिए अपना नाम लिखें (या लिंक में ?from=नाम जोड़ें)
+  senderName: "रामलाल",          // बदलने के लिए अपना नाम लिखें (या लिंक में ?from=नाम जोड़ें)
   siteUrl: "",                        // वैकल्पिक: अपनी GitHub Pages URL, जैसे "https://username.github.io/chhath-puja/"
   songFile: "assets/chhath-song.mp3", // आपके पास वैध रूप से उपलब्ध MP3
   loop: true,
