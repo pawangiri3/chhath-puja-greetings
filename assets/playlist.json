@@ -1,0 +1,15 @@
+{
+  "loop": true,
+  "items": [
+    {
+      "type": "video",
+      "src": "assets/scene-1.mp4",
+      "title": "छठ घाट की एक झलक"
+    },
+    {
+      "type": "video",
+      "src": "assets/scene-2.mp4",
+      "title": "छठ घाट • अर्घ्य का पावन दृश्य"
+    }
+  ]
+}
